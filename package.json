@@ -1,0 +1,23 @@
+{
+	"name": "node-template",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"prepare": "lefthook install",
+		"start": "bun run src/index.ts",
+		"dev": "bun --watch run src/index.ts",
+		"test": "bun test",
+		"lint": "biome check . && tsc --noEmit",
+		"format": "biome check . --write"
+	},
+	"devDependencies": {
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	},
+	"dependencies": {
+		"@types/convict": "^6.1.6",
+		"convict": "^6.2.4"
+	}
+}
