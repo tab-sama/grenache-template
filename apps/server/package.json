@@ -4,10 +4,10 @@
 	"type": "commonjs",
 	"main": "index.js",
 	"scripts": {
-		"dev": "bun run index.js",
-		"test": "bun test",
-		"lint": "biome check .",
-		"format": "biome check . --write"
+		"format": "moon -q server:format",
+		"lint": "moon -q server:lint",
+		"test": "moon -q server:test",
+		"dev": "moon -q server:dev"
 	},
 	"dependencies": {
 		"@grenache-template/biome": "workspace:*",
