@@ -1,16 +1,12 @@
 {
-	"name": "node-template",
+	"name": "grenache-template",
 	"type": "module",
 	"private": true,
+	"workspaces": [
+		"apps/*",
+		"libs/*"
+	],
 	"scripts": {
-		"prepare": "lefthook install",
-		"start": "bun run src/index.ts",
-		"dev": "bun --watch run src/index.ts",
-		"test": "bun test",
-		"lint": "biome check .",
-		"format": "biome check . --write"
-	},
-	"dependencies": {
-		"convict": "^6.2.4"
+		"prepare": "lefthook install"
 	}
 }

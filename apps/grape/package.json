@@ -1,0 +1,12 @@
+{
+	"private": true,
+	"name": "@grenache-template/grape",
+	"type": "commonjs",
+	"scripts": {
+		"dev:grape1": "grape --dp 20001 --aph 30001 --bn '127.0.0.1:20002'",
+		"dev:grape2": "grape --dp 20002 --aph 40001 --bn '127.0.0.1:20001'"
+	},
+	"dependencies": {
+		"grenache-grape": "1.0.0"
+	}
+}

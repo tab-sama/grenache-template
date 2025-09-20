@@ -1,0 +1,17 @@
+{
+	"private": true,
+	"name": "@grenache-template/server",
+	"type": "commonjs",
+	"main": "index.js",
+	"scripts": {
+		"dev": "bun run index.js",
+		"test": "bun test",
+		"lint": "biome check .",
+		"format": "biome check . --write"
+	},
+	"dependencies": {
+		"@grenache-template/biome": "workspace:*",
+		"grenache-nodejs-ws": "^1.0.0",
+		"grenache-nodejs-link": "^1.0.2"
+	}
+}

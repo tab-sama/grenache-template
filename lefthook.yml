@@ -3,9 +3,9 @@ pre-commit:
   commands:
     lint:
       glob: "*.{js,ts,tsx,jsx}"
-      run: bun run lint
+      run: moon -q :lint
 
 pre-push:
   commands:
     lint:
-      run: bun run lint
+      run: moon -q :lint
