@@ -1,23 +1,24 @@
-# 🚀 TypeScript Template
+# 🚀 Grenache Microservices Template
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
 [![Bun](https://img.shields.io/badge/Bun-1.2-orange.svg)](https://bun.sh/)
 [![Biome](https://img.shields.io/badge/Biome-1.9-green.svg)](https://biomejs.dev/)
+[![Grenache](https://img.shields.io/badge/Grenache-1.0-green.svg)](https://github.com/bitfinexcom/grenache)
 
-A modern, production-ready template for TypeScript projects with all the essential tools and configurations you need to
-get started quickly! 🎯
+A modern, production-ready template for Grenache microservices projects with all the essential tools and configurations
+you need to get started with distributed microservices quickly! 🎯
+
+Based on the [Bitfinex Grenache tutorial](https://blog.bitfinex.com/tutorial/bitfinex-loves-microservices-grenache/).
 
 ## ✨ Features
 
 This template comes pre-configured with:
 
 - 🔥 **Bun Runtime**: Ultra-fast JavaScript runtime and package manager
-- 📘 **TypeScript**: Type-safe JavaScript with modern ES features
+- 🌐 **Grenache Microservices**: Distributed microservice architecture with DHT-based service discovery
 - 🧹 **Biome**: Fast linter and formatter (Prettier + ESLint replacement)
-- 🔧 **Modern Configuration**: ESNext target with strict type checking
-- 🌐 **HTTP Server**: Simple Bun server with health endpoint example
-- 📦 **ES Modules**: Modern module system
+- 📦 **Monorepo Structure**: Bun workspace with Moonrepo for task management
+- 🔗 **WebSocket Communication**: Server-client communication via Grenache WebSocket transport
 - 🚨 **Git Integration**: Pre-configured with Biome VCS integration
 - 🪝 **Git Hooks**: Lefthook for automated quality checks
 - 📝 **GitHub Templates**: CODE_OF_CONDUCT.md, SECURITY.md, and LICENSE included
@@ -31,6 +32,7 @@ This template comes pre-configured with:
 - Alternatively, you can install tools separately:
     - [Bun](https://bun.sh/) (latest version)
     - [Biome](https://biomejs.dev/) (latest version)
+    - [Moon](https://moonrepo.dev/) (latest version)
 
 ### Installation
 
@@ -42,7 +44,7 @@ This template comes pre-configured with:
    ```
 3. **Install tools and dependencies**:
    ```bash
-   # Install all required tools (bun, biome) using proto
+   # Install all required tools (bun, biome, moon) using proto
    proto install
    
    # Install project dependencies
@@ -51,25 +53,67 @@ This template comes pre-configured with:
 
 ### 🏃‍♂️ Running the Project
 
-```bash
-# Start the development server (with watch mode)
-bun run dev
+**Important**: You must start the components in this specific order:
 
-# Start the production server
-bun run start
-```
+1. **Start Grape DHT nodes** (required for service discovery):
+   ```bash
+   # Terminal 1: Start first grape node
+   cd apps/grape
+   bun run dev:grape1
+   
+   # Terminal 2: Start second grape node
+   cd apps/grape  
+   bun run dev:grape2
+   ```
+
+2. **Start the server** (after grape nodes are running):
+   ```bash
+   # Terminal 3: Start the microservice server
+   cd apps/server
+   bun run dev
+   ```
+
+3. **Start the client** (after server is running):
+   ```bash
+   # Terminal 4: Start the client
+   cd apps/client
+   bun run dev
+   ```
 
 ## 🛠️ Development
 
 ### Available Scripts
 
+#### Root Level Scripts
+
+| Script            | Description                |
+|-------------------|----------------------------|
+| `bun run prepare` | Install Lefthook Git hooks |
+
+#### Grape DHT Scripts (apps/grape)
+
+| Script               | Description                              |
+|----------------------|------------------------------------------|
+| `bun run dev:grape1` | Start first grape DHT node (port 20001)  |
+| `bun run dev:grape2` | Start second grape DHT node (port 20002) |
+
+#### Server Scripts (apps/server)
+
 | Script           | Description                                 |
 |------------------|---------------------------------------------|
-| `bun run start`  | Start the production server                 |
 | `bun run dev`    | Start development server with file watching |
-| `bun run lint`   | Run Biome linter                            |
-| `bun run format` | Format code with Biome                      |
-| `bun run prepare`| Install Lefthook Git hooks                  |
+| `bun run lint`   | Run Biome linter for server                 |
+| `bun run format` | Format server code with Biome               |
+| `bun run test`   | Run server tests                            |
+
+#### Client Scripts (apps/client)
+
+| Script           | Description                   |
+|------------------|-------------------------------|
+| `bun run dev`    | Start development client      |
+| `bun run lint`   | Run Biome linter for client   |
+| `bun run format` | Format client code with Biome |
+| `bun run test`   | Run client tests              |
 
 ### 🧹 Code Quality
 
@@ -113,6 +157,7 @@ git commit -m "feat!: breaking change" # Use BREAKING CHANGE footer instead
 ```
 
 **Available commit types:**
+
 - `feat` - New features
 - `fix` - Bug fixes
 - `docs` - Documentation changes
@@ -144,24 +189,25 @@ lefthook install
 ### 📁 Project Structure
 
 ```
-├── src/
-│   └── index.ts          # Main application entry point
-├── biome.json           # Biome configuration
-├── tsconfig.json        # TypeScript configuration
-├── package.json         # Project dependencies and scripts
-└── README.md            # You are here! 📍
+├── apps/                    # Monorepo applications
+│   ├── grape/              # Grape DHT nodes for service discovery
+│   │   ├── package.json    # Grape app dependencies and scripts
+│   │   └── index.js        # Grape DHT node implementation
+│   ├── server/             # Grenache microservice server
+│   │   ├── package.json    # Server dependencies and scripts
+│   │   └── index.js        # Server implementation
+│   └── client/             # Grenache microservice client
+│       ├── package.json    # Client dependencies and scripts
+│       └── index.js        # Client implementation
+├── libs/                   # Shared libraries
+│   └── biome/              # Shared Biome configuration
+├── .moon/                  # Moonrepo configuration
+├── package.json            # Root workspace configuration
+├── lefthook.yml           # Git hooks configuration
+└── README.md              # You are here! 📍
 ```
 
 ## 🔧 Configuration
-
-### TypeScript Configuration
-
-The `tsconfig.json` is configured for modern TypeScript development:
-
-- ESNext target and library
-- Strict type checking enabled
-- Bun-optimized module resolution
-- React JSX support ready
 
 ### Biome Configuration
 
@@ -186,10 +232,11 @@ The `biome.json` includes:
 
 To customize this template for your project:
 
-1. **Update package.json** with your project details
-2. **Modify the server** in `src/index.ts` to fit your needs
-3. **Adjust TypeScript/Biome configs** as needed
-4. **Update this README** with your project-specific information
+1. **Update package.json files** with your project details in root and each app
+2. **Modify the microservices** in `apps/server/index.js` and `apps/client/index.js` to fit your needs
+3. **Adjust Biome configs** in `libs/biome/` as needed
+4. **Configure Grape DHT ports** in `apps/grape/package.json` for your network setup
+5. **Update this README** with your project-specific information
 
 ## 🔒 Security
 
@@ -203,7 +250,9 @@ This project is licensed under the Apache License—see the [LICENSE](LICENSE) f
 
 - [Bun](https://bun.sh/) for the amazing runtime
 - [Biome](https://biomejs.dev/) for fast linting and formatting
-- [TypeScript](https://www.typescriptlang.org/) for type safety
+- [Grenache](https://github.com/bitfinexcom/grenache) for the microservices framework
+- [Bitfinex](https://www.bitfinex.com/) for creating and maintaining Grenache
+- [Moonrepo](https://moonrepo.dev/) for excellent monorepo tooling
 
 ---
 
