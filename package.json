@@ -1,7 +1,6 @@
 {
-	"name": "grenache-template",
-	"type": "module",
 	"private": true,
+	"name": "grenache-template",
 	"workspaces": [
 		"apps/*",
 		"libs/*"
