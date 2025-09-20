@@ -7,5 +7,3 @@ tasks:
     script: 'biome check .'
   test:
     script: 'bun test'
-  dev:
-    script: 'bun run index.js'
