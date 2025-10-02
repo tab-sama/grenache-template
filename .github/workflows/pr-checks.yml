@@ -1,0 +1,37 @@
+name: PR Checks
+
+on:
+  pull_request:
+    types: [ opened, synchronize, edited, reopened ]
+    branches: [ master ]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  checks:
+    name: PR Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Setup proto and moon toolchains
+        uses: moonrepo/setup-toolchain@v0
+        with:
+          auto-install: true
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Validate PR title
+        run: cog verify "${{ github.event.pull_request.title }}"
+      - name: Lint with moon CI
+        run: moon ci :lint
+      - name: Generate CI run reports
+        uses: moonrepo/run-report-action@v1
+        with:
+          access-token: ${{ secrets.GITHUB_TOKEN }}
